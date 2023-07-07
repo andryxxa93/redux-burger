@@ -1,17 +1,27 @@
 import './App.css';
 import IngredientsList from "./components/IngredientsList";
 import BurgerConstructor from "./components/BurgerConstructor";
-import {data} from "./data";
-
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {addIngredients} from "./services/actions";
 
 function App() {
+    const dispatch = useDispatch();
+    const isLoading = useSelector(store => store.isLoading);
+
+    useEffect(() => {
+        dispatch(addIngredients());
+    }, [])
+
+
   return (
       <>
-        <div className="App">
-          <IngredientsList data={data}/>
-          <BurgerConstructor data={data}/>
-        </div>
-        <button>Create Order</button>
+          {isLoading
+              ? <div>Loading</div>
+              : <div className="App">
+              <IngredientsList/>
+              <BurgerConstructor/>
+          </div>}
       </>
 );
 }

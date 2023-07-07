@@ -1,6 +1,12 @@
-const Ingredient = ({ingredient}) => {
+
+const Ingredient = ({ingredient, onClick}) => {
+
+    const onClickHandler = () => {
+        onClick(ingredient);
+    }
+
     return (
-        <div className="ingredient">
+        <div onClick={onClickHandler} className="ingredient">
             <span>
                 {ingredient.name}
             </span>
