@@ -1,10 +1,11 @@
 import Ingredient from "./Ingredient";
 import {useDispatch, useSelector} from "react-redux";
-import {createOrder, deleteIngredient} from "../services/actions";
+import {createOrder} from "../services/actions";
+import {deleteIngredient} from "../services/constructor/reducer";
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
-    const orderNumber = useSelector(state => state.order.order?.order.number);
+    // const orderNumber = useSelector(state => state.order.order?.order.number);
     const ingredients = useSelector(state => state.constructor.constructorIngredients);
 
 
@@ -23,8 +24,8 @@ const BurgerConstructor = () => {
                 {ingredients?.length
                     ? ingredients.map(ingredient => <Ingredient onClick={onDelete} key={ingredient._id} ingredient={ingredient}/>) : null}
             </div>
-            <button onClick={createOrderHandler}>Create Order</button>
-            {orderNumber && <h3>{orderNumber}</h3>}
+            {/*<button onClick={createOrderHandler}>Create Order</button>*/}
+            {/*{orderNumber && <h3>{orderNumber}</h3>}*/}
         </>
 )
 }

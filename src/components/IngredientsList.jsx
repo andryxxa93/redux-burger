@@ -1,6 +1,6 @@
 import Ingredient from "./Ingredient";
 import {useDispatch, useSelector} from "react-redux";
-import {addIngredient} from "../services/actions";
+import {addIngredient} from "../services/constructor/reducer";
 
 const IngredientsList = () => {
     const dispatch = useDispatch();
@@ -9,6 +9,8 @@ const IngredientsList = () => {
     const onAdd = (ingredient) => {
         dispatch(addIngredient({...ingredient, id: Math.random()}));
     }
+
+    if (!ingredients?.length) return null;
 
     return (
         <div className="container">

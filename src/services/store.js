@@ -1,14 +1,11 @@
-import {applyMiddleware, createStore} from "redux";
-import {composeWithDevTools} from "redux-devtools-extension";
-import {rootReducer} from "./reducer";
-import thunk from "redux-thunk";
+import {configureStore} from '@reduxjs/toolkit'
+import ingredientsReducer from "./ingredients/reducer";
+import constructorReducer from "./constructor/reducer";
 
-export const configureStore = (initialStore) => {
-    const store = createStore(
-        rootReducer,
-        initialStore,
-        composeWithDevTools(applyMiddleware(thunk)),
-    )
-
-    return store;
+export const store = configureStore({
+    reducer: {
+        ingredients: ingredientsReducer,
+        constructor: constructorReducer,
+    }
 }
+);
