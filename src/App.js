@@ -1,17 +1,24 @@
 import './App.css';
 import IngredientsList from "./components/IngredientsList";
 import BurgerConstructor from "./components/BurgerConstructor";
-import {data} from "./data";
+import {useDispatch} from "react-redux";
+import {useEffect} from "react";
+import {getIngredients} from "./services/ingredientSlice";
 
 
 function App() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getIngredients())
+    }, [dispatch]);
+
   return (
       <>
         <div className="App">
-          <IngredientsList data={data}/>
-          <BurgerConstructor data={data}/>
+          <IngredientsList />
+          <BurgerConstructor />
         </div>
-        <button>Create Order</button>
       </>
 );
 }
