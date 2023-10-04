@@ -1,10 +1,15 @@
 import Ingredient from "./Ingredient";
+import {useContext} from "react";
+import {ConstructorContext} from "../App";
 
-const BurgerConstructor = ({data, onDelete}) => {
+const BurgerConstructor = () => {
+
+    const {data, onDelete} = useContext(ConstructorContext)
+
     return (
         <div className="container">
             <h2>Burger Constructor</h2>
-            {data.map(ingredient => <Ingredient onClick={onDelete} key={ingredient._id} ingredient={ingredient}/>)}
+            {data.map(ingredient => <Ingredient onClick={onDelete} key={ingredient.uniqId} ingredient={ingredient}/>)}
         </div>
     )
 }

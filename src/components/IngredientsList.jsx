@@ -1,6 +1,11 @@
 import Ingredient from "./Ingredient";
+import {useContext} from "react";
+import {IngredientContext} from "../App";
 
-const IngredientsList = ({data, onAdd}) => {
+const IngredientsList = () => {
+
+    const { data, onAdd } = useContext(IngredientContext);
+
     return (
         <div className="container">
             <h2>Ingredients List</h2>

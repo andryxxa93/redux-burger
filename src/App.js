@@ -1,8 +1,11 @@
 import './App.css';
 import IngredientsList from "./components/IngredientsList";
 import BurgerConstructor from "./components/BurgerConstructor";
-import {useEffect, useState} from "react";
+import {createContext, useEffect, useMemo, useState} from "react";
+import {nanoid} from "nanoid";
 
+export const IngredientContext = createContext({});
+export const ConstructorContext = createContext({});
 
 function App() {
     const [data, setData] = useState([]);
@@ -15,18 +18,29 @@ function App() {
     }, []);
 
     const addHandler = (ingredient) => {
-        setAddedIngredients(prev => [...prev, ingredient])
+        setAddedIngredients(prev => [...prev, { ...ingredient, uniqId: nanoid() }])
     }
 
     const deleteHandler = (ingredient) => {
-        setAddedIngredients(prev => prev.filter(({ _id }) => _id !== ingredient._id))
+        setAddedIngredients(addedIngredients.filter(({ uniqId }) => uniqId !== ingredient.uniqId))
     }
 
+    const ingredientsContextValue = useMemo(() => ({
+        data, onAdd: addHandler
+    }), [data]);
+
+    const constructorContextValue = useMemo(() => ({
+        onDelete: deleteHandler, data: addedIngredients
+    }), [addedIngredients, deleteHandler]);
 
   return (
         <div className="App">
-            <IngredientsList data={data} onAdd={addHandler} />
-            <BurgerConstructor onDelete={deleteHandler} data={addedIngredients} />
+            <IngredientContext.Provider value={ingredientsContextValue}>
+                <IngredientsList />
+            </IngredientContext.Provider>
+            <ConstructorContext.Provider value={constructorContextValue}>
+                <BurgerConstructor />
+            </ConstructorContext.Provider>
             <button>Create Order</button>
         </div>
 );
