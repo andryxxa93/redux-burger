@@ -1,10 +1,16 @@
 import Ingredient from "./Ingredient";
 
-const IngredientsList = ({data}) => {
+const IngredientsList = ({data, onAdd}) => {
     return (
         <div className="container">
             <h2>Ingredients List</h2>
-            {data.map(ingredient => <Ingredient key={ingredient._id} ingredient={ingredient}/>)}
+            {data.map(ingredient => (
+                <Ingredient
+                    onClick={onAdd}
+                    key={ingredient._id}
+                    ingredient={ingredient}/>
+                )
+            )}
         </div>
     )
 }
