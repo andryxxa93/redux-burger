@@ -1,10 +1,15 @@
 import Ingredient from "./Ingredient";
-import {useContext} from "react";
-import {ConstructorContext} from "../App";
+import {useDispatch, useSelector} from "react-redux";
+import {getConstructorIngredients} from "../services/ingredients/selectors";
+import {deleteIngredient} from "../services/ingredients/actions";
 
 const BurgerConstructor = () => {
+    const dispatch = useDispatch();
+    const data = useSelector(getConstructorIngredients);
 
-    const {data, onDelete} = useContext(ConstructorContext)
+    const onDelete = ({uniqId}) => {
+        dispatch(deleteIngredient(uniqId));
+    }
 
     return (
         <div className="container">

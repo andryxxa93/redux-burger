@@ -1,47 +1,30 @@
 import './App.css';
 import IngredientsList from "./components/IngredientsList";
 import BurgerConstructor from "./components/BurgerConstructor";
-import {createContext, useEffect, useMemo, useState} from "react";
-import {nanoid} from "nanoid";
-
-export const IngredientContext = createContext({});
-export const ConstructorContext = createContext({});
+import {useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {addIngredients, getIngredients} from "./services/ingredients/actions";
+import {makeOrder} from "./services/order/actions";
 
 function App() {
-    const [data, setData] = useState([]);
-    const [addedIngredients, setAddedIngredients] = useState([]);
+    const dispatch = useDispatch();
+    const addedIngredients = useSelector(state => state.ingredients.constructorIngredients);
 
     useEffect(() => {
-        fetch('https://norma.nomoreparties.space/api/ingredients')
-            .then(res => res.ok ? res.json() : Promise.reject(res.json()))
-            .then(res => setData(res.data));
-    }, []);
+        dispatch(getIngredients());
+    }, [dispatch]);
 
-    const addHandler = (ingredient) => {
-        setAddedIngredients(prev => [...prev, { ...ingredient, uniqId: nanoid() }])
+
+    const onOrder = () => {
+        const ids = addedIngredients.map(({_id}) => _id);
+        dispatch(makeOrder(ids));
     }
-
-    const deleteHandler = (ingredient) => {
-        setAddedIngredients(addedIngredients.filter(({ uniqId }) => uniqId !== ingredient.uniqId))
-    }
-
-    const ingredientsContextValue = useMemo(() => ({
-        data, onAdd: addHandler
-    }), [data]);
-
-    const constructorContextValue = useMemo(() => ({
-        onDelete: deleteHandler, data: addedIngredients
-    }), [addedIngredients, deleteHandler]);
 
   return (
         <div className="App">
-            <IngredientContext.Provider value={ingredientsContextValue}>
                 <IngredientsList />
-            </IngredientContext.Provider>
-            <ConstructorContext.Provider value={constructorContextValue}>
                 <BurgerConstructor />
-            </ConstructorContext.Provider>
-            <button>Create Order</button>
+            <button onClick={onOrder}>Create Order</button>
         </div>
 );
 }
